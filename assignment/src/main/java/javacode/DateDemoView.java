@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This view class is Java swing
+ * it can let each input very clearly
+ * and each input can be checked in this view before they sent to CalcResult class
  */
 package javacode;
 
@@ -26,7 +26,7 @@ import javax.swing.border.EmptyBorder;
  *
  * @author Julia
  */
-public class DateDemo extends JFrame implements ActionListener {
+public class DateDemoView extends JFrame implements ActionListener {
     int[] newDate1 = new int[]{};
     int yearNum1 = 0;
     int monthNum1 = 1;
@@ -57,7 +57,7 @@ public class DateDemo extends JFrame implements ActionListener {
     JTextArea yearText2 = new JTextArea("2020");
     private JComboBox dropListMonth2 = new JComboBox();
     private JComboBox dropListDay2 = new JComboBox();
-    public DateDemo() {
+    public DateDemoView() {
 
         year1.setEditable(false);
         month1.setEditable(false);
@@ -65,6 +65,7 @@ public class DateDemo extends JFrame implements ActionListener {
         year2.setEditable(false);
         month2.setEditable(false);
         day2.setEditable(false);
+        resultText.setEditable(false);
         
         totalP.setLayout(new BorderLayout());
         date.setLayout(new GridLayout(0, 3));
@@ -118,11 +119,8 @@ public class DateDemo extends JFrame implements ActionListener {
                     } 
                 }catch(NumberFormatException ex){
                     resultText.setText("Wrong number in year 1.");
-                }
-                
-            
+                }            
         });
-
         dropListDay1.addActionListener(ea -> {
                 String getYear1 = yearText1.getText().trim();
                 try{
@@ -132,10 +130,9 @@ public class DateDemo extends JFrame implements ActionListener {
                     resultText.setText("");
                 }catch(NumberFormatException ex){
                     resultText.setText("Wrong number with year 1.");
-                }
-                
-            
+                }           
         });
+        
         dropListMonth2.addActionListener(ec -> {
                 String getYear2 = yearText2.getText().trim();
                 try{
@@ -169,11 +166,8 @@ public class DateDemo extends JFrame implements ActionListener {
                     } 
                 }catch(NumberFormatException ex){
                     resultText.setText("Wrong number in year 2.");
-                }
-                
-            
+                }           
         });
-
         dropListDay2.addActionListener(eb -> {
                 String getYear2 = yearText2.getText().trim();
                 try{
@@ -183,9 +177,7 @@ public class DateDemo extends JFrame implements ActionListener {
                     resultText.setText("");
                 }catch(NumberFormatException ex){
                     resultText.setText("Wrong number with year 2.");
-                }
-                
-            
+                }            
         });
         
         confirm.addActionListener(cl -> {
@@ -198,11 +190,9 @@ public class DateDemo extends JFrame implements ActionListener {
                 if(!checkDate(dateString1)) resultText.setText("Wrong number in date 1.");
                 else if(!checkDate(dateString2)) resultText.setText("Wrong number in date 2.");
                 else{
-                    ShowResult result = new ShowResult();
-                    
-                    resultText.setText("result ... " + result.result(dateString1, dateString2));
-                }
-                
+                    CalcResult result = new CalcResult();                    
+                    resultText.setText(result.result(dateString1, dateString2)+" days between them.");
+                }                
             }catch(NumberFormatException ex){
                 resultText.setText("Wrong number with year.");
             }
@@ -253,10 +243,18 @@ public class DateDemo extends JFrame implements ActionListener {
         }               
     }
     
-    public boolean checkDate(int[] date1){
-        int checkYear = date1[0];
-        int checkMonth = date1[1];
-        int checkDay = date1[2];
+    /**
+     * To check each input number is right
+     * @param date int[]{year, month, day}
+     * @return true for right otherwise false
+     * If two input dates are right
+     * they will be calculated by CalcResult class 
+     * to return the result days
+     */
+    public boolean checkDate(int[] date){
+        int checkYear = date[0];
+        int checkMonth = date[1];
+        int checkDay = date[2];
         if(isLeapYear(checkYear) && checkMonth == 2){
             if(checkDay>=1 && checkDay<=29) return true;
         }

@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * calculate days between two dates without import util.date util.calender time.localdate
+ * MainClass to call Java swing view DateDemoView
+ * The result shown on the view is calculated by CalcResult class
  */
 package javacode;
 
@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
  */
 public class MainClass {
         public MainClass() {
-        DateDemo demo = new DateDemo();
+        DateDemoView demo = new DateDemoView();
         
     }
 

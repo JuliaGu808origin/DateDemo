@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * View send two dates array to this class
+ * To use this class method to calculate and return the result
+ * 
  */
 package javacode;
 
@@ -9,7 +9,7 @@ package javacode;
  *
  * @author Julia
  */
-public class ShowResult {
+public class CalcResult {
     public int result(int[] array1, int[] array2){
         int year1 = array1[0];
         int year2 = array2[0];
@@ -24,34 +24,35 @@ public class ShowResult {
         int[] endArray = new int[]{};
         int[] startArray = new int[]{};
         
-        if(year1>year2){
-            endArray = array1;
-            startArray = array2;
-            startDays = startArray[2] + calcAllDays(startArray, endArray);
-            endDays = endArray[2];
-            days = calcAllDays(startArray, endArray) - (startArray[2]-1);
-        }
-        else if(year1==year2){
-            if(month1>month2){
+        if(year1!=year2){
+            if(year1>year2){
                 endArray = array1;
-                startArray = array2;
-                int monthDays = calcMonthDays(isLeapYear(year1), endArray, startArray);
+                startArray = array2;              
+            }
+            else{
+                endArray = array2;
+                startArray = array1;
+            }
+            startDays = startArray[2] + calcDaysByYear(startArray, endArray);
+            endDays = endArray[2];
+            days = calcDaysByYear(startArray, endArray) - (startArray[2]-1);
+        }
+        else{
+            if(month1!=month2){
+                if(month1>month2){
+                    endArray = array1;
+                    startArray = array2;                    
+                }
+                else{
+                    endArray = array2;
+                    startArray = array1;
+                }
+                int monthDays = calcMonthDays(isLeapYear(year1), startArray[1], endArray);
                 days = monthDays - (startArray[2]-1);   
             }
             else if(month1==month2){
                 days = day1 - day2;
             }
-            else{
-                endArray = array2;
-                startArray = array1;
-                int monthDays = calcMonthDays(isLeapYear(year1), endArray, startArray);
-                days = monthDays - (startArray[2]-1);  
-            }
-        }
-        else{
-            endArray = array2;
-            startArray = array1;
-            days = calcAllDays(startArray, endArray) - (startArray[2]-1);
         }
         return days;
     }
@@ -67,20 +68,12 @@ public class ShowResult {
             return false;
         }               
     }
-    
-    public int calcYearDays(int youngYear, int oldYear){
-        int days = 0;
-        for(int i = oldYear; i < youngYear; i++){
-            if(isLeapYear(i)) days += 366;
-            else days += 365;
-        }
-        return days;        
-    }   
-    public int calcMonthDays(boolean isLeapYear, int[] youngMonth, int[] oldMonth){
+  
+    public int calcMonthDays(boolean isLeapYear, int startMonth, int[] endMonth){
         int days = 0;
         boolean isEndMonth = false;
-        for(int i = oldMonth[1]; i <= youngMonth[1]; i++){
-            if(i == youngMonth[1]) isEndMonth = true;
+        for(int i = startMonth; i <= endMonth[1]; i++){
+            if(i == endMonth[1]) isEndMonth = true;
                 if(!isEndMonth){
                     if(isLeapYear && i == 2) days += 29;
                     else if(!isLeapYear && i == 2) days += 28;
@@ -88,13 +81,13 @@ public class ShowResult {
                     else days += 30;                      
                 }
                 else{
-                    days = days + youngMonth[2] -1;
+                    days = days + endMonth[2] -1;
                 }
         }        
         return days;        
     }   
     
-    public int calcAllDays(int[] start, int[] end){
+    public int calcDaysByYear(int[] start, int[] end){
         boolean isStart = true;
         boolean isEnd = false;
         boolean isEndMonth = false;

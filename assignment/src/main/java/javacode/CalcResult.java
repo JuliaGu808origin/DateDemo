@@ -50,7 +50,7 @@ public class CalcResult {
                 int monthDays = calcMonthDays(isLeapYear(year1), startArray[1], endArray);
                 days = monthDays - (startArray[2]-1);   
             }
-            else if(month1==month2){
+            else{
                 days = day1 - day2;
             }
         }
@@ -75,10 +75,7 @@ public class CalcResult {
         for(int i = startMonth; i <= endMonth[1]; i++){
             if(i == endMonth[1]) isEndMonth = true;
                 if(!isEndMonth){
-                    if(isLeapYear && i == 2) days += 29;
-                    else if(!isLeapYear && i == 2) days += 28;
-                    else if(i==1 || i==3 || i==5 || i==7 || i==8 || i==10 || i==12) days += 31;
-                    else days += 30;                      
+                    days += calcDays(isLeapYear, i);                   
                 }
                 else{
                     days = days + endMonth[2] -1;
@@ -97,20 +94,14 @@ public class CalcResult {
             if(i == end[0]) isEnd = true;
             if(isStart){
                 for(int j = start[1]; j <= 12; j++){
-                    if(isLeapYear(i) && j == 2) days += 29;
-                    else if(!isLeapYear(i) && j == 2) days += 28;
-                    else if(j==1 || j==3 || j==5 || j==7 || j==8 || j==10 || j==12) days += 31;
-                    else days += 30;                        
+                    days += calcDays(isLeapYear(i), j);                       
                 }               
             }
             else if(isEnd){
                 for(int j = 1; j <= end[1]; j++){
                     if(j == end[1]) isEndMonth = true;
                     if(!isEndMonth){
-                        if(isLeapYear(i) && j == 2) days += 29;
-                        else if(!isLeapYear(i) && j == 2) days += 28;
-                        else if(j==1 || j==3 || j==5 || j==7 || j==8 || j==10 || j==12) days += 31;
-                        else days += 30;                       
+                        days += calcDays(isLeapYear(i), j);                      
                     }
                     else{
                         days = days + end[2] -1;
@@ -119,14 +110,18 @@ public class CalcResult {
             }
             else{
                 for(int j = 1; j <= 12; j++){
-                    if(isLeapYear(i) && j == 2) days += 29;
-                    else if(!isLeapYear(i) && j == 2) days += 28;
-                    else if(j==1 || j==3 || j==5 || j==7 || j==8 || j==10 || j==12) days += 31;
-                    else days += 30;
+                    days += calcDays(isLeapYear(i), j);
                 } 
             }
         }
         return days;
+    }
+    
+    public int calcDays(boolean isLeapYear, int month){
+        if(isLeapYear && month == 2) return 29;
+        else if(!isLeapYear && month == 2) return 28;
+        else if(month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12) return 31;
+        else return 30;  
     }
     
 }
